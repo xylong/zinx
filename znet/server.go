@@ -33,14 +33,14 @@ func (s *Server) Start() {
 	// 1.获取tcp连接地址
 	addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 	if err != nil {
-		fmt.Println("resolve tcp addr error:", err.Error())
+		fmt.Println("resolve tcp addr error:" + err.Error())
 		return
 	}
 
 	// 2.监听服务器地址
 	listener, err := net.ListenTCP(s.IPVersion, addr)
 	if err != nil {
-		fmt.Println("listen tcp addr error:", err.Error())
+		fmt.Println("listen tcp addr error:" + err.Error())
 		return
 	}
 
@@ -48,7 +48,7 @@ func (s *Server) Start() {
 	for {
 		conn, err := listener.AcceptTCP()
 		if err != nil {
-			fmt.Println("accept tcp error", err.Error())
+			fmt.Println("accept tcp error" + err.Error())
 			continue
 		}
 
@@ -58,13 +58,13 @@ func (s *Server) Start() {
 				buf := make([]byte, 512)
 				count, err := conn.Read(buf)
 				if err != nil {
-					fmt.Println("receive buf error:", err.Error())
+					fmt.Println("receive buf error:" + err.Error())
 					continue
 				}
 
 				// 返回数据
 				if _, err = conn.Write(buf[:count]); err != nil {
-					fmt.Println("write buf error:", err.Error())
+					fmt.Println("write buf error:" + err.Error())
 					continue
 				}
 			}
