@@ -46,6 +46,7 @@ func (s *Server) Start() {
 		}
 
 		// 3.阻塞等待客户端连接，处理客户端业务(读写)
+		var cid uint64
 		for {
 			conn, err := listener.AcceptTCP()
 			if err != nil {
@@ -53,23 +54,10 @@ func (s *Server) Start() {
 				continue
 			}
 
-			go func() {
-				for {
-					// 读数据
-					buf := make([]byte, 512)
-					count, err := conn.Read(buf)
-					if err != nil {
-						fmt.Println("receive buf error:" + err.Error())
-						continue
-					}
-
-					// 返回数据
-					if _, err = conn.Write(buf[:count]); err != nil {
-						fmt.Println("write buf error:" + err.Error())
-						continue
-					}
-				}
-			}()
+			// 和connection模块绑定
+			dealConn := NewConnection(conn, cid, CallbackToClient)
+			go dealConn.Start()
+			cid++
 		}
 	}()
 
@@ -84,4 +72,15 @@ func (s *Server) Run() {
 	s.Start()
 
 	select {}
+}
+
+// CallbackToClient 回显消息给客户端
+func CallbackToClient(conn *net.TCPConn, data []byte, cnt int) error {
+	fmt.Println("[Conn Handle] callback to client")
+	if _, err := conn.Write(data[:cnt]); err != nil {
+		fmt.Println("write back buf error:", err.Error())
+		return fmt.Errorf("callback error")
+	}
+
+	return nil
 }

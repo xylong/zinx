@@ -16,7 +16,7 @@ func main() {
 
 	// 2.发数据
 	for {
-		_, err = conn.Write([]byte("hello"))
+		_, err = conn.Write([]byte("hello world"))
 		if err != nil {
 			fmt.Println("client write error:" + err.Error())
 			return
@@ -29,7 +29,7 @@ func main() {
 			return
 		}
 
-		fmt.Printf("callback %s, %d\n", buf, count)
+		fmt.Printf("callback1 %s, %d\n", buf, count)
 		time.Sleep(time.Second * 2)
 	}
 }

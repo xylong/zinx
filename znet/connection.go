@@ -53,6 +53,7 @@ func (c *Connection) StartReader() {
 // Start 启动链接
 func (c *Connection) Start() {
 	fmt.Printf("connection %d start\n", c.ConnID)
+	go c.StartReader()
 }
 
 func (c *Connection) Stop() {
