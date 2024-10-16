@@ -1,5 +1,14 @@
 zinx-Golang轻量级TCP服务器框架
 
+### 目录结构
+```
+.
+├── test                    // 测试
+│   └── internal
+│       └── tcp             // tcp测试
+├── ziface                  // interface层
+└── znet                    // 实现层
+```
 
 ### 架构
 1. server
