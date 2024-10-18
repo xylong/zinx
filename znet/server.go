@@ -15,6 +15,8 @@ type Server struct {
 	IP string
 	// Port 服务器监听端口
 	Port int
+	// Router 路由
+	Router ziface.IRouter
 }
 
 func NewServer(name string) ziface.IServer {
@@ -23,6 +25,7 @@ func NewServer(name string) ziface.IServer {
 		IPVersion: "tcp4",
 		IP:        "0.0.0.0",
 		Port:      8899,
+		Router:    nil,
 	}
 }
 
@@ -55,7 +58,7 @@ func (s *Server) Start() {
 			}
 
 			// 和connection模块绑定
-			dealConn := NewConnection(conn, cid, CallbackToClient)
+			dealConn := NewConnection(conn, cid, s.Router)
 			go dealConn.Start()
 			cid++
 		}
@@ -74,13 +77,6 @@ func (s *Server) Run() {
 	select {}
 }
 
-// CallbackToClient 回显消息给客户端
-func CallbackToClient(conn *net.TCPConn, data []byte, cnt int) error {
-	fmt.Println("[Conn Handle] callback to client")
-	if _, err := conn.Write(data[:cnt]); err != nil {
-		fmt.Println("write back buf error:", err.Error())
-		return fmt.Errorf("callback error")
-	}
-
-	return nil
+func (s *Server) AddRouter(router ziface.IRouter) {
+	s.Router = router
 }

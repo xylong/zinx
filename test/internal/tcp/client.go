@@ -29,7 +29,7 @@ func main() {
 			return
 		}
 
-		fmt.Printf("callback1 %s, %d\n", buf, count)
+		fmt.Printf("callback %s, %d\n", buf, count)
 		time.Sleep(time.Second * 2)
 	}
 }

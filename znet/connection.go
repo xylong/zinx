@@ -14,17 +14,17 @@ type Connection struct {
 	ConnID uint64
 	// 是否关闭
 	isClosed bool
-	// 当前连接绑定的处理业务的方法
-	handle ziface.HandleFunc
+	// Router 路由
+	Router ziface.IRouter
 	// 退出通知
 	ExitChan chan struct{}
 }
 
-func NewConnection(conn *net.TCPConn, connID uint64, handle ziface.HandleFunc) *Connection {
+func NewConnection(conn *net.TCPConn, connID uint64, router ziface.IRouter) *Connection {
 	return &Connection{
 		Conn:     conn,
 		ConnID:   connID,
-		handle:   handle,
+		Router:   router,
 		isClosed: false,
 		ExitChan: make(chan struct{}, 1),
 	}
@@ -37,16 +37,22 @@ func (c *Connection) StartReader() {
 
 	for {
 		buf := make([]byte, 512)
-		count, err := c.Conn.Read(buf)
+		_, err := c.Conn.Read(buf)
 		if err != nil {
 			fmt.Println("reader receive buf error:" + err.Error())
 			continue
 		}
 
-		if err = c.handle(c.Conn, buf, count); err != nil {
-			fmt.Printf("connID=%d handle error:", err.Error())
-			break
+		req := Request{
+			conn: c,
+			data: buf,
 		}
+
+		go func(request ziface.IRequest) {
+			c.Router.Before(request)
+			c.Router.Handle(request)
+			c.Router.After(request)
+		}(&req)
 	}
 }
 
@@ -82,6 +88,6 @@ func (c *Connection) GetRemoteAddr() net.Addr {
 	return c.Conn.RemoteAddr()
 }
 
-func (c *Connection) Send() error {
+func (c *Connection) Send(data []byte) error {
 	return nil
 }

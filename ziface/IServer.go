@@ -7,4 +7,6 @@ type IServer interface {
 	Stop()
 	// Run 运行服务器
 	Run()
+	// AddRouter 添加路由，供客户端连接处理使用
+	AddRouter(IRouter)
 }
