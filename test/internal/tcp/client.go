@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// 1.连接服务器
-	conn, err := net.Dial("tcp", "127.0.0.1:8899")
+	conn, err := net.Dial("tcp", "127.0.0.1:9527")
 	if err != nil {
 		fmt.Println("connect server error:" + err.Error())
 		return
@@ -22,7 +22,7 @@ func main() {
 			return
 		}
 
-		buf := make([]byte, 512)
+		buf := make([]byte, 4096)
 		count, err := conn.Read(buf)
 		if err != nil {
 			fmt.Println("client read error:" + err.Error())
