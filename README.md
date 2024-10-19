@@ -57,3 +57,5 @@ zinx-Golang轻量级TCP服务器框架
       2. server增加router成员属性
       3. Connection绑定一个router成员
       4. Connection调用已经注册的Router
+   4. 消息封装
+      1. 消息结构体
