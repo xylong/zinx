@@ -78,8 +78,8 @@ func TestDataPack(t *testing.T) {
 
 	msg2 := &Message{
 		Id:     2,
-		Length: 7,
-		Data:   []byte{'h', 'e', 'l', 'l', 'o', '!', '!'},
+		Length: 11,
+		Data:   []byte("hello world"),
 	}
 	pack2, err := dp.Pack(msg2)
 	if err != nil {
