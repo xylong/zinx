@@ -1,27 +1,25 @@
 package znet
 
-import "github.com/spf13/cast"
-
 // Message 消息
 type Message struct {
-	Id     uint64 // 消息id
-	Length uint64 // 消息长度
+	Id     uint32 // 消息id
+	Length uint32 // 消息长度
 	Data   []byte // 消息内容
 }
 
-func (m *Message) GetMsgId() uint64 {
+func (m *Message) GetMsgId() uint32 {
 	return m.Id
 }
 
-func (m *Message) SetMsgId(id uint64) {
+func (m *Message) SetMsgId(id uint32) {
 	m.Id = id
 }
 
-func (m *Message) GetMsgLen() uint64 {
-	return cast.ToUint64(len(m.Data))
+func (m *Message) GetMsgLen() uint32 {
+	return m.Length
 }
 
-func (m *Message) SetMsgLen(length uint64) {
+func (m *Message) SetMsgLen(length uint32) {
 	m.Length = length
 }
 

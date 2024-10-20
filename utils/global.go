@@ -15,7 +15,7 @@ type GlobalObj struct {
 
 	Version        string // 版本号
 	MaxConn        int    // 服务允许的最大连接数
-	MaxPackageSize uint64 // 支持的数据包最大值
+	MaxPackageSize uint32 // 支持的数据包最大值
 }
 
 // Reload 加载用户自定义配置
@@ -42,5 +42,5 @@ func init() {
 		MaxPackageSize: 4096,
 	}
 
-	GlobalObject.Reload()
+	//GlobalObject.Reload()
 }
